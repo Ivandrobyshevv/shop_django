@@ -1,0 +1,16 @@
+<div class="dropdown">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Аккаунт
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      {% if user.is_authenticated %}
+          <a class="dropdown-item" href="{% url 'profile' %}">{{ user.username| title }}</a>
+          <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+          <a class="dropdown-item" href="{% url 'cart_detail' %}">Корзина</a>
+      {% else %}
+          <a class="dropdown-item" href="{% url 'login' %}">Войти</a>
+          <a class="dropdown-item" href="{% url 'cart_detail' %}">Корзина</a>
+      {% endif %}
+  </div>
+</div>

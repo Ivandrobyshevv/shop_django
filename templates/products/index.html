@@ -1,0 +1,51 @@
+{% extends 'base_products.html' %}
+{% load static %}
+{% block title %}Store{% endblock %}
+{% block css %}
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <div class="jumbotron ">
+                        <h1 class="display-4">Store</h1>
+                        <p class="lead">Новые образы и лучшие бренды Store.
+                            Бесплатная доставка по всему миру! Аутлет: до -70% Собственный бренд. -20% новым
+                            покупателям..</p>
+                        <button id="start-purchase-btn" type="button" class="btn btn-lg">
+                            <a id="start-purchase-link" href="{% url 'products' %}">
+                                Начать покупки
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <h1 class="text-center m-5">Новинки</h1>
+
+            <div class="row mb-5">
+                {% for product in new_products %}
+                    <div class="col">
+                        <div class="card bg-dark" style="width: 18rem;">
+                            <img src="{{ product.imag.url }}" class="card-img-top" alt="...">
+                            <div class="card-body ">
+                                <h5 class="card-title text-white">{{ product.name }}</h5>
+                                <p class="card-text text-white ">{{ product.body }}</p>
+                                <button id="start-purchase-btn" type="button" class="btn btn-lg">
+                                    <a id="start-purchase-link"
+                                       href="{{ product.get_absolute_url }}">
+                                        Посмотреть
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base_products.html' %}
+{% load static %}
+{% block title %}Shop - {{ product }}{% endblock %}
+{% block css %}
+    <link href="{% static 'css/style.default.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+
+    <section class="py-5 mt-5">
+        <div class="container mb-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-5">
+                    <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'products' %}">Каталог</a></li>
+                    <li class="breadcrumb-item"><a
+                            href="{% url 'category' product.category.slug %}">{{ product.category }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ product }}</li>
+                </ol>
+            </nav>
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <!-- PRODUCT SLIDER-->
+                    <div class="row m-sm-0">
+                        <div class="col-sm-10 order-1 order-sm-2">
+                            <div class="swiper product-slider swiper-initialized swiper-horizontal swiper-pointer-events">
+                                <div class="swiper-wrapper" id="swiper-wrapper-9910eee1104e1a8ce9" aria-live="polite"
+                                     style="transform: translate3d(0px, 0px, 0px);">
+                                    <div class="swiper-slide h-auto swiper-slide-active" role="group" aria-label="1 / 4"
+                                         style="width: 503px;">
+                                        <img class="img-fluid" src="{{ product.imag.url }}" alt="...">
+                                    </div>
+                                </div>
+                                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PRODUCT DETAILS-->
+                <div class="col-lg-6">
+                    <h1>{{ product.name }}</h1>
+                    <p class="text-muted lead">{{ product.price }}₽</p>
+                    <p class="text-sm mb-4">{{ product.body }}</p>
+                    <form action="{% url 'cart_add' product.pk %}" method="post">
+                        {% csrf_token %}
+                        <div class="row align-items-stretch mb-4">
+                            <div class="col-sm-5 pr-sm-0">
+                                <div class="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white">
+                                    {{ form_product_form }}
+                                </div>
+                            </div>
+                            <div class="col-sm-3 pl-sm-0">
+                                <input class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0"
+                                       type="submit" value="Add to cart">
+                            </div>
+                        </div>
+                    </form>
+                    <ul class="list-unstyled small d-inline-block">
+                        <li class="px-3 py-2 mb-1 bg-white text-muted"><strong
+                                class="text-uppercase text-dark">Category:</strong><a
+                                class="reset-anchor ms-2"
+                                href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- DETAILS TABS-->
+            <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
+                <li class="nav-item"><a class="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab"
+                                        href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
+                </li>
+            </ul>
+            <div class="tab-content mb-5" id="myTabContent">
+                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                     aria-labelledby="description-tab">
+                    <div class="p-4 p-lg-5 bg-white">
+                        <h6 class="text-uppercase">{{ product.name }}</h6>
+                        <p class="text-muted text-sm mb-0">{{ product.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- RELATED PRODUCTS-->
+            <h2 class="h5 text-uppercase mb-4">Похожие товар</h2>
+            <div class="row">
+                <!-- PRODUCT-->
+                {% for prod in product.category.products.all %}
+                    {% if prod.pk == product.pk %}
+                    {% else %}
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="product text-center skel-loader">
+                                <div class="d-block mb-3 position-relative"><a class="d-block"
+                                                                               href="{{ prod.get_absolute_url }}"><img
+                                        class="img-fluid w-100" src="{{ prod.imag.url }}" alt="..."></a>
+                                    <div class="product-overlay">
+                                        <ul class="mb-0 list-inline">
+
+                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark"
+                                                                                    href="#">Add to
+                                                cart</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <h6><a class="reset-anchor" href="{{ prod.get_absolute_url }}">{{ prod.name }}</a></h6>
+                                <p class="small text-muted">{{ prod.price }}₽</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

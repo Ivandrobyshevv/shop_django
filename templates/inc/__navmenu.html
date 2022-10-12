@@ -1,0 +1,8 @@
+<ul class="list-group">
+    <li class="list-group-item disabled" aria-disabled="true">
+        <h4>Категории</h4>
+    </li>
+    {% for category in categories %}
+        <a href="{{ category.get_absolute_url }}" class="list-group-item">{{ category.name }}</a>
+    {% endfor %}
+</ul>

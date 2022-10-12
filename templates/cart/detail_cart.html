@@ -1,0 +1,86 @@
+{% extends "base_products.html" %}
+{% load static %}
+
+{% block title %}
+    Корзина покупок
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="container mt-5 ">
+        <h1 class="mb-5">Корзина покупок</h1>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Картинка</th>
+                <th scope="col">Товар</th>
+                <th scope="col">Обновить кол-во</th>
+                <th scope="col">Удалить</th>
+                <th scope="col">Кол-во</th>
+                <th scope="col">Цена за шт</th>
+                <th scope="col">Общая стоимость</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in cart %}
+                {% with product=item.product %}
+                    <tr>
+                        <td>
+                            <a href="{{ product.get_absolute_url }}"><img width="200" height="200" src="
+                                    {% if product.imag %}{{ product.imag.url }}
+                                    {% else %}{% static 'vendor/img/cart/no_image.png' %}
+                                    {% endif %}"></a>
+                        </td>
+                        <td><p class="mt-3">{{ product.name }}</p></td>
+                        <td>
+                            <form action="{% url 'cart_add' product.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto my-1">
+                                        <label class="mr-sm-2 sr-only"
+                                               for="{{ item.update_quantity_form.quantity.id_for_label }}">Предпочтение</label>
+                                        {{ item.update_quantity_form.quantity }}
+                                        {{ item.update_quantity_form.update }}
+                                    </div>
+                                    <div class="col-auto my-1">
+                                        <button type="submit" class="btn btn-dark">Обновить</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{% url 'cart_remove' product.id %}" style="text-decoration: none; color: gray;">
+                                <i class="far fa-trash-alt"></i>
+                            </a>
+                        </td>
+                        <td>
+                            {{ item.quantity }}
+                        </td>
+                        <td class="num">{{ item.price }}P</td>
+                        <td class="num">{{ item.total_price }}P</td>
+                    </tr>
+                {% endwith %}
+            {% endfor %}
+            <tr class="total">
+                <td>Всего</td>
+                <td colspan="5"></td>
+                <td class="num">{{ cart.get_total_price }}Р</td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="text-right">
+            <button id="start-purchase-btn" type="button" class="btn btn-lg">
+                <a id="start-purchase-link"
+                   href="{% url 'products' %}">
+                    В магазин
+                </a>
+            </button>
+            <button id="start-purchase-btn" type="button" class="btn btn-lg">
+                <a id="start-purchase-link"
+                   href="#">
+                    Оформить заказ
+                </a>
+            </button>
+        </p>
+    </div>
+{% endblock %}
